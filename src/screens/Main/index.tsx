@@ -16,6 +16,8 @@ import {
   PendingButtonText,
   DeliveredButton,
   DeliveredButtonText,
+  CreatePackageButton,
+  CreatePackageButtonText,
 } from './styles';
 
 import { useTheme } from '../../hooks/theme';
@@ -23,11 +25,26 @@ import SearchBar from '../../components/SearchBar';
 
 import { usePackagesReducer } from '../../hooks/packages';
 
+import { ParamListBase, useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+
 const Main: React.FC = () => {
   const { theme } = useTheme();
+  const navigation = useNavigation<
+    NativeStackNavigationProp<ParamListBase, any>
+  >();
 
   const [searchFocused, setSearchFocused] = useState(false);
+
   const { dispatch, packagesState } = usePackagesReducer();
+
+  const handleNewPackage = useCallback(() => {
+    navigation.navigate('New');
+  }, []);
+
+  const handleEditPackage = useCallback((userPackage: object) => {
+    navigation.navigate('Edit', { package: userPackage });
+  }, []);
 
   const handleDeletePackage = useCallback((id: string) => {
     Alert.alert(
@@ -66,24 +83,30 @@ const Main: React.FC = () => {
         data={packagesState.pending}
         showsVerticalScrollIndicator={false}
         ListHeaderComponent={() => (
-          <FilterContainer>
-            <PendingButton
-              selected={true}
-              onPress={() => {
-                dispatch({
-                  type: 'CREATE_PACKAGE',
-                  payload: {
-                    title: 'Nova encomenda',
-                    code: 'Entendo',
-                  },
-                });
-              }}>
-              <PendingButtonText selected={true}>Pendentes</PendingButtonText>
-            </PendingButton>
-            <DeliveredButton>
-              <DeliveredButtonText>Entregues</DeliveredButtonText>
-            </DeliveredButton>
-          </FilterContainer>
+          <>
+            <CreatePackageButton onPress={handleNewPackage}>
+              <Icon name="file-plus" size={20} color="#FFF" />
+              <CreatePackageButtonText>Adicionar Novo</CreatePackageButtonText>
+            </CreatePackageButton>
+            <FilterContainer>
+              <PendingButton
+                selected={true}
+                onPress={() => {
+                  dispatch({
+                    type: 'CREATE_PACKAGE',
+                    payload: {
+                      title: 'Nova encomenda',
+                      code: 'Entendo',
+                    },
+                  });
+                }}>
+                <PendingButtonText selected={true}>Pendentes</PendingButtonText>
+              </PendingButton>
+              <DeliveredButton>
+                <DeliveredButtonText>Entregues</DeliveredButtonText>
+              </DeliveredButton>
+            </FilterContainer>
+          </>
         )}
         keyExtractor={item => item.id}
         renderItem={({ item }) => (
@@ -96,7 +119,7 @@ const Main: React.FC = () => {
               <PackageCode>{item.code}</PackageCode>
             </MetaContainer>
             <OptionsContainer>
-              <Button color="#4895ef">
+              <Button color="#4895ef" onPress={() => handleEditPackage(item)}>
                 <Icon name="edit" size={20} color="#fff" />
               </Button>
               <Button

@@ -9,7 +9,7 @@ const Settings: React.FC = () => {
 
   return (
     <Container>
-      <SettingItem>
+      <SettingItem activeOpacity={1} onPress={toggleTheme}>
         <Switch
           value={theme.title === 'dark'}
           thumbColor={theme.colors.primary}

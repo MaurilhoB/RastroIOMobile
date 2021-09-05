@@ -6,7 +6,7 @@ export const Container = styled.View`
   padding: 5px 0;
 `;
 
-export const SettingItem = styled.View`
+export const SettingItem = styled.TouchableOpacity`
   flex-direction: row;
   align-items: center;
   padding: 12px 8px;

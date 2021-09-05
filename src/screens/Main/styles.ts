@@ -127,3 +127,19 @@ export const DeliveredButtonText = styled.Text<IButtonTextProps>`
     props.selected ? '#ffffff' : props.theme.colors.text_primary};
   font-size: 16px;
 `;
+
+export const CreatePackageButton = styled.TouchableOpacity`
+  flex-direction: row;
+  align-items: center;
+  background: #3097ef;
+  margin: 2px 12px 8px;
+  padding: 12px;
+  border-radius: 10px;
+`;
+
+export const CreatePackageButtonText = styled.Text`
+  font-family: 'Poppins-Medium';
+  color: #fff;
+  font-size: 16px;
+  margin-left: 4px;
+`;

@@ -1,15 +1,21 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
 import Icon from 'react-native-vector-icons/Feather';
 
 import Main from '../screens/Main';
 import Archived from '../screens/Archived';
 import Settings from '../screens/Settings';
+
 import { useTheme } from '../hooks/theme';
+import New from '../screens/New';
+import Edit from '../screens/Edit';
 
 const Tab = createBottomTabNavigator();
+const Stack = createNativeStackNavigator();
 
-const Routes = () => {
+const TabNavigator: React.FC = () => {
   const { theme } = useTheme();
   return (
     <Tab.Navigator
@@ -63,6 +69,27 @@ const Routes = () => {
         options={{ title: 'Configurações' }}
       />
     </Tab.Navigator>
+  );
+};
+
+const Routes = () => {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="Root"
+        options={{ headerShown: false }}
+        component={TabNavigator}
+      />
+      <Stack.Group
+        screenOptions={{
+          presentation: 'modal',
+          headerShown: false,
+          animation: 'slide_from_bottom',
+        }}>
+        <Stack.Screen name="New" component={New} />
+        <Stack.Screen name="Edit" component={Edit} />
+      </Stack.Group>
+    </Stack.Navigator>
   );
 };
 
