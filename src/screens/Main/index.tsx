@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
+import { Alert, FlatList } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 
 import {
   Container,
-  FlatList,
   Package,
   MetaContainer,
   PackageTitle,
@@ -17,14 +17,41 @@ import {
   DeliveredButton,
   DeliveredButtonText,
 } from './styles';
+
 import { useTheme } from '../../hooks/theme';
 import SearchBar from '../../components/SearchBar';
 
+import { usePackagesReducer } from '../../hooks/packages';
+
 const Main: React.FC = () => {
-  const { toggleTheme, theme } = useTheme();
-  const fakeData = new Array(10).fill(null);
+  const { theme } = useTheme();
 
   const [searchFocused, setSearchFocused] = useState(false);
+  const { dispatch, packagesState } = usePackagesReducer();
+
+  const handleDeletePackage = useCallback((id: string) => {
+    Alert.alert(
+      'Aviso!',
+      'Deseja mesmo deletar este pacote?\nA ação não pode ser desfeita',
+      [
+        {
+          text: 'Sim',
+          style: 'destructive',
+          onPress: () => {
+            dispatch({
+              type: 'DELETE_PACKAGE',
+              payload: { id },
+            });
+          },
+        },
+        {
+          text: 'Cancelar',
+          style: 'cancel',
+        },
+      ],
+      { cancelable: true },
+    );
+  }, []);
 
   return (
     <Container>
@@ -36,11 +63,21 @@ const Main: React.FC = () => {
         placeholder="Digite o nome do pacote"
       />
       <FlatList
-        data={fakeData}
+        data={packagesState.pending}
         showsVerticalScrollIndicator={false}
         ListHeaderComponent={() => (
           <FilterContainer>
-            <PendingButton selected={true} onPress={toggleTheme}>
+            <PendingButton
+              selected={true}
+              onPress={() => {
+                dispatch({
+                  type: 'CREATE_PACKAGE',
+                  payload: {
+                    title: 'Nova encomenda',
+                    code: 'Entendo',
+                  },
+                });
+              }}>
               <PendingButtonText selected={true}>Pendentes</PendingButtonText>
             </PendingButton>
             <DeliveredButton>
@@ -48,21 +85,23 @@ const Main: React.FC = () => {
             </DeliveredButton>
           </FilterContainer>
         )}
-        keyExtractor={(item, index) => String(index)}
-        renderItem={() => (
+        keyExtractor={item => item.id}
+        renderItem={({ item }) => (
           <Package>
             <IconContainer>
               <Icon name="package" size={30} color="#fff" />
             </IconContainer>
             <MetaContainer>
-              <PackageTitle>Encomenda 1</PackageTitle>
-              <PackageCode>PC565982256BR</PackageCode>
+              <PackageTitle>{item.title}</PackageTitle>
+              <PackageCode>{item.code}</PackageCode>
             </MetaContainer>
             <OptionsContainer>
               <Button color="#4895ef">
                 <Icon name="edit" size={20} color="#fff" />
               </Button>
-              <Button color="#e76f51">
+              <Button
+                color="#e76f51"
+                onPress={() => handleDeletePackage(item.id)}>
                 <Icon name="trash" size={20} color="#fff" />
               </Button>
             </OptionsContainer>

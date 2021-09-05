@@ -1,4 +1,26 @@
-import styled, { css } from 'styled-components/native';
+import styled from 'styled-components/native';
+import { FlatList } from 'react-native';
+
+export interface TrackEvent {
+  data: string;
+  hora: string;
+  descricao: string;
+  criacao: string;
+  unidade: {
+    tipounidade: string;
+    cidade: string;
+    uf: string;
+  };
+}
+
+interface IPackage {
+  id: string;
+  title: string;
+  code: string;
+  events: TrackEvent[];
+  updated_at: string;
+  hasUpdate: boolean;
+}
 
 interface IIconButtonProps {
   color?: string;
@@ -16,8 +38,6 @@ export const Container = styled.View`
   flex: 1;
   background: ${props => props.theme.colors.background_primary};
 `;
-
-export const FlatList = styled.FlatList``;
 
 export const Package = styled.View`
   flex-direction: row;
@@ -59,7 +79,7 @@ export const PackageCode = styled.Text`
 
 export const OptionsContainer = styled.View``;
 
-export const Button = styled.View<IIconButtonProps>`
+export const Button = styled.TouchableOpacity<IIconButtonProps>`
   padding: 8px;
   border: 0;
   border-radius: 5px;
@@ -71,7 +91,6 @@ export const Button = styled.View<IIconButtonProps>`
 `;
 
 export const FilterContainer = styled.View`
-  /* background: ${props => props.theme.colors.background_primary}; */
   flex-direction: row;
   justify-content: space-between;
   padding: 8px 12px;

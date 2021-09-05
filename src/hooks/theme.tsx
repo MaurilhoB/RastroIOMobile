@@ -1,4 +1,5 @@
 import React, { createContext, useCallback, useContext } from 'react';
+import { useColorScheme } from 'react-native';
 
 import { DefaultTheme, ThemeProvider } from 'styled-components';
 import usePersistedState from './usePersistedState';
@@ -16,9 +17,11 @@ const AppThemeContext = createContext<AppThemeContextData>(
 );
 
 const AppThemeProvider: React.FC = ({ children }) => {
+  const usertheme = useColorScheme();
+
   const [theme, setTheme] = usePersistedState<DefaultTheme>(
     '@RastroIO:theme',
-    light,
+    usertheme === 'dark' ? dark : light,
   );
 
   const toggleTheme = useCallback(() => {

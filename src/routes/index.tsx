@@ -15,9 +15,15 @@ const Routes = () => {
     <Tab.Navigator
       screenOptions={({ route }) => ({
         headerTintColor: theme.colors.text_primary,
+        headerTitleStyle: { fontFamily: 'Poppins-Medium' },
         headerStyle: { backgroundColor: theme.colors.surface },
         tabBarActiveTintColor: theme.colors.primary,
+        tabBarInactiveTintColor: theme.colors.text_primary,
 
+        tabBarStyle: {
+          backgroundColor: theme.colors.surface,
+          borderTopColor: theme.colors.border,
+        },
         tabBarIcon: ({ focused, color, size }) => {
           let iconName: string;
 
@@ -44,7 +50,7 @@ const Routes = () => {
       <Tab.Screen
         name="Main"
         component={Main}
-        options={{ headerShown: false }}
+        options={{ headerShown: false, title: 'Pacotes' }}
       />
       <Tab.Screen
         name="Archived"
