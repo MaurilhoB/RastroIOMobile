@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import { FlatList } from 'react-native';
+import { FlatList, Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 
 import {
@@ -19,7 +19,7 @@ import { usePackagesReducer } from '../../hooks/packages';
 const Archived: React.FC = () => {
   const { theme } = useTheme();
 
-  const { packagesState } = usePackagesReducer();
+  const { packagesState, dispatch } = usePackagesReducer();
 
   const [searchFocused, setSearchFocused] = useState(false);
 
