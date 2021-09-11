@@ -1,24 +1,6 @@
 import styled from 'styled-components/native';
-import { FlatList } from 'react-native';
 
-export interface TrackEvent {
-  data: string;
-  hora: string;
-  descricao: string;
-  criacao: string;
-  unidade: {
-    tipounidade: string;
-    cidade: string;
-    uf: string;
-  };
-}
-
-interface IPackage {
-  id: string;
-  title: string;
-  code: string;
-  events: TrackEvent[];
-  updated_at: string;
+interface IPackageProps {
   hasUpdate: boolean;
 }
 
@@ -39,15 +21,16 @@ export const Container = styled.View`
   background: ${props => props.theme.colors.background_primary};
 `;
 
-export const Package = styled.View`
+export const Package = styled.TouchableOpacity<IPackageProps>`
   flex-direction: row;
   align-items: center;
-  background: ${props => props.theme.colors.surface};
+  background: ${props =>
+    props.hasUpdate ? 'rgba(166, 148, 230, .2)' : props.theme.colors.surface};
   padding: 12px 8px;
   margin: 0 12px;
   margin-bottom: 8px;
   border-radius: 10px;
-  elevation: 1;
+  elevation: ${props => (props.hasUpdate ? 0 : 1)};
 `;
 
 export const IconContainer = styled.View`
@@ -105,6 +88,13 @@ export const PendingButton = styled.TouchableOpacity<IButtonProps>`
   elevation: 1;
 `;
 
+export const PendingButtonText = styled.Text<IButtonTextProps>`
+  font-family: 'Poppins-Medium';
+  color: ${props =>
+    props.selected ? '#ffffff' : props.theme.colors.text_primary};
+  font-size: 16px;
+`;
+
 export const DeliveredButton = styled.TouchableOpacity<IButtonProps>`
   background: ${props =>
     props.selected ? props.theme.colors.primary : props.theme.colors.surface};
@@ -112,13 +102,6 @@ export const DeliveredButton = styled.TouchableOpacity<IButtonProps>`
   border-radius: 10px;
   width: 48%;
   elevation: 1;
-`;
-
-export const PendingButtonText = styled.Text<IButtonTextProps>`
-  font-family: 'Poppins-Medium';
-  color: ${props =>
-    props.selected ? '#ffffff' : props.theme.colors.text_primary};
-  font-size: 16px;
 `;
 
 export const DeliveredButtonText = styled.Text<IButtonTextProps>`

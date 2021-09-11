@@ -23,17 +23,6 @@ const Settings: React.FC = () => {
           Tema: {theme.title === 'dark' ? 'Escuro' : 'Claro'}
         </SettingText>
       </SettingItem>
-      <SettingItem>
-        <Switch
-          value={true}
-          thumbColor={theme.colors.primary}
-          trackColor={{
-            true: '#baacec',
-            false: theme.colors.background_primary,
-          }}
-        />
-        <SettingText>Atualizar pacotes ao iniciar</SettingText>
-      </SettingItem>
     </Container>
   );
 };

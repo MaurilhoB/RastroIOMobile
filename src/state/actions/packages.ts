@@ -45,12 +45,19 @@ export interface IUpdateAction {
   hasUpdate: boolean;
 }
 
+export interface IMoveAction {
+  package: IPackage;
+  to: 'archived' | 'delivered' | 'archived';
+}
+
 const create = createAction<ICreateAction>('CREATE_PACKAGE');
 
 const drop = createAction<IDropAction>('DELETE_PACKAGE');
 
 const update = createAction<IUpdateAction>('UPDATE_PACKAGE');
 
+const move = createAction<IMoveAction>('MOVE_PACKAGE');
+
 const initialdata = createAction<IPackages>('INITIAL_DATA');
 
-export { create, drop, update, initialdata };
+export { create, drop, update, move, initialdata };

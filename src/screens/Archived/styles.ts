@@ -9,7 +9,7 @@ export const Container = styled.View`
   background: ${props => props.theme.colors.background_primary};
 `;
 
-export const Package = styled.View`
+export const Package = styled.TouchableOpacity`
   flex-direction: row;
   align-items: center;
   background: ${props => props.theme.colors.surface};

@@ -1,7 +1,8 @@
 import immer from 'immer';
+import _ from 'lodash';
 import uuid from 'react-native-uuid';
 import { ReducerFactory } from 'redux-actions-ts-reducer';
-import { create, drop, update, initialdata } from '../actions/packages';
+import { create, drop, update, initialdata, move } from '../actions/packages';
 
 interface TrackEvent {
   data: string;
@@ -75,7 +76,7 @@ const packagesReducer = new ReducerFactory({} as IPackages)
     update,
     (state, action): IPackages =>
       immer(state, draft => {
-        const id = action.payload.id;
+        const { id } = action.payload;
 
         const pendingIndex = draft.pending.findIndex(item => item.id === id);
         if (pendingIndex > -1) {
@@ -101,6 +102,34 @@ const packagesReducer = new ReducerFactory({} as IPackages)
         }
         return draft;
       }),
+  )
+  .addReducer(move, (state, action) =>
+    immer(state, draft => {
+      const { payload } = action;
+
+      const category = _.findKey(draft, item =>
+        _.find(item, { id: payload.package.id }),
+      ) as keyof IPackages;
+
+      if (category && payload.to) {
+        const removed = _.filter(
+          draft[category],
+          item => item.id !== payload.package.id,
+        );
+        const toInsert = _.filter(
+          draft[category],
+          item => item.id === payload.package.id,
+        )[0];
+
+        draft[category] = removed;
+
+        if (toInsert) {
+          draft[payload.to].push(toInsert);
+        }
+
+        return draft;
+      }
+    }),
   )
   .addReducer(initialdata, (_, action): IPackages => action.payload)
   .toReducer();

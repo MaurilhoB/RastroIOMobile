@@ -28,7 +28,7 @@ const New: React.FC = () => {
       type: 'CREATE_PACKAGE',
       payload: {
         title: name,
-        code,
+        code: code.toUpperCase(),
       },
     });
     navigation.goBack();
@@ -48,10 +48,11 @@ const New: React.FC = () => {
         />
         <Input
           value={code}
+          autoCapitalize="characters"
           focused={codeFocused}
           placeholder="Código de rastreamento"
           placeholderTextColor={theme.colors.text_secondary}
-          onChangeText={value => setCode(value.toUpperCase())}
+          onChangeText={value => setCode(value)}
           onFocus={() => setCodeFocused(true)}
           onBlur={() => setCodeFocused(false)}
         />

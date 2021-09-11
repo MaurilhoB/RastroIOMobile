@@ -11,6 +11,7 @@ import packagesReducer from '../state/reducers/packages';
 import {
   ICreateAction,
   IDropAction,
+  IMoveAction,
   IUpdateAction,
 } from '../state/actions/packages';
 
@@ -45,7 +46,9 @@ interface IPackages {
 }
 
 interface PackagesContextData {
-  dispatch: Dispatch<Action<ICreateAction | IDropAction | IUpdateAction>>;
+  dispatch: Dispatch<
+    Action<ICreateAction | IDropAction | IUpdateAction | IMoveAction>
+  >;
   packagesState: IPackages;
 }
 
@@ -54,6 +57,8 @@ const PackagesContext = createContext<PackagesContextData>(
 );
 
 const PackagesProvider: React.FC = ({ children }) => {
+  const [ready, setReady] = useState(false);
+
   const [packagesState, dispatch] = useReducer(packagesReducer, {
     pending: [],
     delivered: [],
@@ -68,16 +73,19 @@ const PackagesProvider: React.FC = ({ children }) => {
           type: 'INITIAL_DATA',
           payload: JSON.parse(data) as IPackages,
         });
+        setReady(true);
       }
     })();
   }, []);
 
   useEffect(() => {
     (async () => {
-      await AsyncStorage.setItem(
-        '@RastroIO:packages',
-        JSON.stringify(packagesState),
-      );
+      if (ready) {
+        await AsyncStorage.setItem(
+          '@RastroIO:packages',
+          JSON.stringify(packagesState),
+        );
+      }
     })();
   }, [packagesState]);
 

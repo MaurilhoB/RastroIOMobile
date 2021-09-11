@@ -57,7 +57,8 @@ const Edit: React.FC<IRouteParams> = ({ route }) => {
       payload: {
         ...packageData,
         title: name,
-        code,
+        code: code.toUpperCase(),
+        events: [],
         updated_at: new Date().toISOString(),
       },
     });
@@ -70,6 +71,7 @@ const Edit: React.FC<IRouteParams> = ({ route }) => {
         <Input
           value={name}
           focused={nameFocused}
+          keyboardAppearance={theme.title === 'dark' ? 'dark' : 'light'}
           placeholder="Nome"
           placeholderTextColor={theme.colors.text_secondary}
           onChangeText={value => setName(value)}
@@ -78,10 +80,12 @@ const Edit: React.FC<IRouteParams> = ({ route }) => {
         />
         <Input
           value={code}
+          autoCapitalize="characters"
           focused={codeFocused}
+          keyboardAppearance={theme.title === 'dark' ? 'dark' : 'light'}
           placeholder="Código de rastreamento"
           placeholderTextColor={theme.colors.text_secondary}
-          onChangeText={value => setCode(value.toUpperCase())}
+          onChangeText={value => setCode(value)}
           onFocus={() => setCodeFocused(true)}
           onBlur={() => setCodeFocused(false)}
         />
