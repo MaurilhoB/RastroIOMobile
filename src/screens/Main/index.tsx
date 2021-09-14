@@ -247,7 +247,7 @@ const Main: React.FC = () => {
         }
         ref={listRef}
         showsVerticalScrollIndicator={false}
-        ListEmptyComponent={NothingHere}
+        ListEmptyComponent={searchFocused ? null : NothingHere}
         ListHeaderComponent={HeaderComponent}
         keyExtractor={item => item.id}
         renderItem={({ item }) => (

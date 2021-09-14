@@ -97,7 +97,7 @@ const Archived: React.FC = () => {
         ref={listRef}
         showsVerticalScrollIndicator={false}
         keyExtractor={item => item.id}
-        ListEmptyComponent={NothingHere}
+        ListEmptyComponent={searchFocused ? null : NothingHere}
         renderItem={({ item }) => (
           <Package
             activeOpacity={0.9}
