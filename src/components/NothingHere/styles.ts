@@ -11,4 +11,5 @@ export const Title = styled.Text`
   margin: 0 auto;
   font-size: 22px;
   font-family: 'Poppins-Medium';
+  color: ${props => props.theme.colors.text_primary};
 `;
