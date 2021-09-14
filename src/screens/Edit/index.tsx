@@ -59,6 +59,7 @@ const Edit: React.FC<IRouteParams> = ({ route }) => {
         title: name,
         code: code.toUpperCase(),
         events: [],
+        hasUpdate: false,
         updated_at: new Date().toISOString(),
       },
     });

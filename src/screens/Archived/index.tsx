@@ -99,7 +99,10 @@ const Archived: React.FC = () => {
         keyExtractor={item => item.id}
         ListEmptyComponent={NothingHere}
         renderItem={({ item }) => (
-          <Package activeOpacity={0.9} onPress={() => handleTrackPackage(item)}>
+          <Package
+            activeOpacity={0.9}
+            onPress={() => handleTrackPackage(item)}
+            onLongPress={() => handleDeletePackage(item.id)}>
             <IconContainer>
               <Icon name="package" size={30} color="#fff" />
             </IconContainer>
